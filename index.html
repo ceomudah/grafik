@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eksplorasi Grafik Fungsi Kuadrat</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f1f5fb;
+    color: #263238;
+}
+
+header {
+    background: linear-gradient(120deg, #174ea6, #4385df);
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 27px;
+}
+
+header p {
+    margin-bottom: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px #00000012;
+}
+
+h2 {
+    color: #174ea6;
+    margin-top: 0;
+}
+
+.rumus {
+    background: #eaf1ff;
+    padding: 15px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #174ea6;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 20px;
+}
+
+.parameter {
+    margin: 22px 0;
+}
+
+.parameter label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: #2465c5;
+}
+
+.nilai {
+    color: #2465c5;
+    font-size: 20px;
+}
+
+canvas {
+    width: 100%;
+    height: auto;
+    border: 1px solid #d4dce8;
+    border-radius: 8px;
+    background: white;
+}
+
+.info {
+    background: #f1f6ff;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 15px;
+    line-height: 1.8;
+}
+
+button {
+    background: #205bb5;
+    color: white;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #123b79;
+}
+
+.petunjuk {
+    background: #fff8e5;
+    border-left: 5px solid #e9a52b;
+    padding: 15px;
+    border-radius: 7px;
+}
+
+footer {
+    background: #123b79;
+    color: white;
+    text-align: center;
+    padding: 18px;
+}
+
+@media(max-width:750px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>EKSPOLORASI GRAFIK FUNGSI KUADRAT</h1>
+    <p>Matematika Kelas X | Kurikulum Merdeka</p>
+    <p>Geser parameter dan amati perubahan grafik!</p>
+</header>
+
+<div class="container">
+
+    <section class="card">
+        <h2>1. Tujuan Pembelajaran</h2>
+        <ul>
+            <li>Memahami bentuk umum fungsi kuadrat.</li>
+            <li>Mengetahui pengaruh parameter a, b, dan c.</li>
+            <li>Mengamati perubahan grafik parabola.</li>
+            <li>Menentukan titik puncak dan sumbu simetri.</li>
+        </ul>
+
+        <div class="rumus">
+            f(x) = ax² + bx + c
+        </div>
+
+        <p>
+            Pada aktivitas ini, kamu dapat mengubah nilai a, b, dan c
+            menggunakan slider. Perhatikan bagaimana perubahan nilai
+            tersebut memengaruhi bentuk dan posisi grafik.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>2. Laboratorium Grafik Interaktif</h2>
+
+        <div class="layout">
+
+            <div>
+                <h3>Geser Parameter</h3>
+
+                <div class="parameter">
+                    <label>
+                        Parameter a
+                        <span class="nilai" id="nilaiA">1</span>
+                    </label>
+                    <input type="range" id="a" min="-3" max="3"
+                           step="0.1" value="1">
+                    <small>Menentukan arah buka dan lebar parabola.</small>
+                </div>
+
+                <div class="parameter">
+                    <label>
+                        Parameter b
+                        <span class="nilai" id="nilaiB">0</span>
+                    </label>
+                    <input type="range" id="b" min="-10" max="10"
+                           step="0.5" value="0">
+                    <small>Memengaruhi posisi sumbu simetri dan titik puncak.</small>
+                </div>
+
+                <div class="parameter">
+                    <label>
+                        Parameter c
+                        <span class="nilai" id="nilaiC">0</span>
+                    </label>
+                    <input type="range" id="c" min="-10" max="10"
+                           step="0.5" value="0">
+                    <small>Menentukan titik potong grafik dengan sumbu Y.</small>
+                </div>
+
+                <button onclick="resetGrafik()">Kembalikan ke Awal</button>
+
+                <div class="info">
+                    <b>Persamaan saat ini:</b>
+                    <div id="persamaan" style="font-size:19px;color:#174ea6">
+                        f(x) = x²
+                    </div>
+                </div>
+
+                <div class="info">
+                    <b>Informasi Grafik</b>
+                    <div id="informasi"></div>
+                </div>
+            </div>
+
+            <div>
+                <h3>Grafik Fungsi Kuadrat</h3>
+                <canvas id="grafik" width="650" height="520"></canvas>
+                <p style="text-align:center;color:#2465c5">
+                    <b>Garis biru menunjukkan grafik fungsi kuadrat.</b>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>3. Amati Perubahan Grafik</h2>
+
+        <div class="petunjuk">
+            <b>Petunjuk kegiatan:</b>
+            <ol>
+                <li>Atur nilai a menjadi 1, kemudian ubah menjadi 2 dan 3.</li>
+                <li>Amati perubahan lebar parabola.</li>
+                <li>Ubah nilai a menjadi -1 dan -2. Amati arah buka parabola.</li>
+                <li>Kembalikan nilai a menjadi 1, lalu geser nilai b.</li>
+                <li>Ubah nilai c dan amati perubahan titik potong sumbu Y.</li>
+            </ol>
+        </div>
+
+        <h3>Pertanyaan Pengamatan</h3>
+        <ol>
+            <li>Apa yang terjadi ketika nilai a semakin besar dan positif?</li>
+            <li>Apa perbedaan grafik ketika nilai a positif dan negatif?</li>
+            <li>Bagaimana perubahan grafik ketika nilai b diubah?</li>
+            <li>Bagaimana pengaruh nilai c terhadap titik potong sumbu Y?</li>
+            <li>Apakah perubahan parameter memengaruhi titik puncak parabola?</li>
+        </ol>
+    </section>
+
+    <section class="card">
+        <h2>4. Kesimpulan Materi</h2>
+        <ul>
+            <li><b>Parameter a:</b> menentukan arah buka dan tingkat kelengkungan parabola. Jika a positif, grafik terbuka ke atas. Jika a negatif, grafik terbuka ke bawah.</li>
+            <li><b>Parameter b:</b> bersama a menentukan sumbu simetri dan posisi titik puncak.</li>
+            <li><b>Parameter c:</b> menentukan titik potong grafik dengan sumbu Y, yaitu (0,c).</li>
+        </ul>
+
+        <div class="rumus">
+            x titik puncak = -b / 2a
+        </div>
+        <div class="rumus">
+            y titik puncak = f(-b / 2a)
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>Media Pembelajaran Interaktif Matematika Kelas X</p>
+    <p>Materi: Grafik Fungsi Kuadrat</p>
+</footer>
+
+<script>
+const canvas = document.getElementById("grafik");
+const ctx = canvas.getContext("2d");
+
+const sliderA = document.getElementById("a");
+const sliderB = document.getElementById("b");
+const sliderC = document.getElementById("c");
+
+const W = canvas.width;
+const H = canvas.height;
+
+const xmin = -10;
+const xmax = 10;
+const ymin = -10;
+const ymax = 10;
+
+function keCanvasX(x) {
+    return (x - xmin) / (xmax - xmin) * W;
+}
+
+function keCanvasY(y) {
+    return H - (y - ymin) / (ymax - ymin) * H;
+}
+
+function gambarGrafik() {
+    let a = Number(sliderA.value);
+    let b = Number(sliderB.value);
+    let c = Number(sliderC.value);
+
+    // Hindari fungsi kuadrat dengan a = 0
+    if (Math.abs(a) < 0.05) {
+        a = 0.1;
+        sliderA.value = a;
+    }
+
+    document.getElementById("nilaiA").textContent = a.toFixed(1);
+    document.getElementById("nilaiB").textContent = b.toFixed(1);
+    document.getElementById("nilaiC").textContent = c.toFixed(1);
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Menggambar bidang grafik
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, W, H);
+
+    // Garis grid
+    ctx.strokeStyle = "#e5eaf1";
+    ctx.lineWidth = 1;
+
+    for (let x = xmin; x <= xmax; x++) {
+        let px = keCanvasX(x);
+        ctx.beginPath();
+        ctx.moveTo(px, 0);
+        ctx.lineTo(px, H);
+        ctx.stroke();
+    }
+
+    for (let y = ymin; y <= ymax; y++) {
+        let py = keCanvasY(y);
+        ctx.beginPath();
+        ctx.moveTo(0, py);
+        ctx.lineTo(W, py);
+        ctx.stroke();
+    }
+
+    // Sumbu X dan Y
+    ctx.strokeStyle = "#263238";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(0, keCanvasY(0));
+    ctx.lineTo(W, keCanvasY(0));
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(keCanvasX(0), 0);
+    ctx.lineTo(keCanvasX(0), H);
+    ctx.stroke();
+
+    // Angka pada sumbu
+    ctx.fillStyle = "#263238";
+    ctx.font = "12px Arial";
+
+    for (let x = xmin; x <= xmax; x += 2) {
+        if (x !== 0) {
+            ctx.fillText(x, keCanvasX(x) - 5, keCanvasY(0) + 17);
+        }
+    }
+
+    for (let y = ymin; y <= ymax; y += 2) {
+        if (y !== 0) {
+            ctx.fillText(y, keCanvasX(0) + 7, keCanvasY(y) + 4);
+        }
+    }
+
+    ctx.fillText("0", keCanvasX(0) + 7, keCanvasY(0) + 16);
+    ctx.fillText("X", W - 18, keCanvasY(0) - 10);
+    ctx.fillText("Y", keCanvasX(0) + 10, 15);
+
+    // Menggambar fungsi kuadrat
+    ctx.beginPath();
+    ctx.strokeStyle = "#1769d2";
+    ctx.lineWidth = 3;
+
+    let mulai = true;
+
+    for (let px = 0; px <= W; px++) {
+        let x = xmin + (px / W) * (xmax - xmin);
+        let y = a * x * x + b * x + c;
+        let py = keCanvasY(y);
+
+        if (mulai) {
+            ctx.moveTo(px, py);
+            mulai = false;
+        } else {
+            ctx.lineTo(px, py);
+        }
+    }
+
+    ctx.stroke();
+
+    // Menghitung titik puncak
+    let xp = -b / (2 * a);
+    let yp = a * xp * xp + b * xp + c;
+
+    // Titik puncak jika terlihat di area grafik
+    if (xp >= xmin && xp <= xmax && yp >= ymin && yp <= ymax) {
+        ctx.beginPath();
+        ctx.fillStyle = "#e34b4b";
+        ctx.arc(keCanvasX(xp), keCanvasY(yp), 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#b52b2b";
+        ctx.font = "bold 13px Arial";
+        ctx.fillText("Titik Puncak", keCanvasX(xp) + 9,
+                     keCanvasY(yp) - 10);
+    }
+
+    // Menggambar sumbu simetri
+    if (xp >= xmin && xp <= xmax) {
+        ctx.beginPath();
+        ctx.setLineDash([6, 5]);
+        ctx.strokeStyle = "#e09a25";
+        ctx.lineWidth = 2;
+        ctx.moveTo(keCanvasX(xp), 0);
+        ctx.lineTo(keCanvasX(xp), H);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Persamaan fungsi
+    let tandaB = b >= 0 ? " + " : " - ";
+    let tandaC = c >= 0 ? " + " : " - ";
+
+    let persamaan = "f(x) = " + a + "x²" +
+        tandaB + Math.abs(b) + "x" +
+        tandaC + Math.abs(c);
+
+    document.getElementById("persamaan").textContent = persamaan;
+
+    // Informasi grafik
+    let arah = a > 0 ? "Terbuka ke atas (minimum)" :
+                       "Terbuka ke bawah (maksimum)";
+
+    document.getElementById("informasi").innerHTML =
+        "Arah parabola: <b>" + arah + "</b><br>" +
+        "Sumbu simetri: <b>x = " + xp.toFixed(2) + "</b><br>" +
+        "Titik puncak: <b>(" + xp.toFixed(2) + ", " +
+        yp.toFixed(2) + ")</b><br>" +
+        "Titik potong sumbu Y: <b>(0, " + c + ")</b>";
+}
+
+function resetGrafik() {
+    sliderA.value = 1;
+    sliderB.value = 0;
+    sliderC.value = 0;
+    gambarGrafik();
+}
+
+sliderA.addEventListener("input", gambarGrafik);
+sliderB.addEventListener("input", gambarGrafik);
+sliderC.addEventListener("input", gambarGrafik);
+
+gambarGrafik();
+</script>
+
+</body>
+</html>
